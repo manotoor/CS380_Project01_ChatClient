@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 
-public final class EchoClient {
+public final class ChatClient {
 
     public static void main(String[] args) throws Exception {
     	System.out.print("Enter Username>");
