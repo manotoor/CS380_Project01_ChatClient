@@ -21,8 +21,9 @@ public final class EchoClient {
 	            		String s = in.readLine();
 	            		if(s.equalsIgnoreCase("null") || s == null)
 	            			break;
-	            		else
-	            		System.out.println(s);
+	            		else {
+	            			System.out.println(s);
+	            		}
 	                }
 	                socket.close();
 	        		
@@ -34,6 +35,8 @@ public final class EchoClient {
 	        Runnable outThread = () -> {
 	        	OutputStream os = null;
 	        	PrintStream out = null;
+	        	int x = 0;
+	        	String userName = null;
 	            try{
 	            	In userInput = new In();
 	
@@ -41,9 +44,18 @@ public final class EchoClient {
 		            os = socket.getOutputStream();
 		    		out = new PrintStream(os, true, "UTF-8");
 	                while(true){
+	                	if(x == 1){
+	                		System.out.println("Connected as " + userName);
+	                		x++;
+	                	}
 	                	String s = userInput.readLine();
 	                	if(s.equalsIgnoreCase("exit") || socket.isClosed()) break;
+	                	if(x == 0) {
+	                		userName = s;
+	                		System.out.println("Attempting connection as " + s + " to " + socket.getInetAddress() + ":"+ socket.getPort());
+	                	}
 	                	out.println(s);
+	                	x++;
 	                }
 	                userInput.close();
 	                out.close();
@@ -60,12 +72,12 @@ public final class EchoClient {
 			serverM.start();
 			int x = 0;
 			while(!socket.isClosed()) {
-				if(socket.isClosed()); //Had a bug where if not checking the while loop never breaks, don't know why so i had to add this statement that does noething
+				if(socket.isClosed());
 				Thread.sleep(1000);
 			}
 			serverM.stop();
 			clientM.stop();
-			System.out.println("Closed Communications with server\nPress any key to exit..");
+			System.out.println("Closed Communications with server\nPress Enter to exit..");
 			clientM = null;
 			serverM = null;
         }catch (IOException e) {
